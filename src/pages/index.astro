@@ -1,11 +1,30 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import AdvancedFeaturesSection from '../components/AdvancedFeaturesSection.astro';
+import CtaSection from '../components/CtaSection.astro';
+import FaqSection from '../components/FaqSection.astro';
+import HeroSection from '../components/HeroSection.astro';
+import HowItWorksSection from '../components/HowItWorksSection.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import WhyChooseSection from '../components/WhyChooseSection.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Bienvenida a CuidaLink">
+	<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+		<div class="layout-container flex h-full grow flex-col">
+			<SiteHeader />
+
+			<main class="flex flex-1 flex-col justify-center">
+				<HeroSection />
+				<WhyChooseSection />
+				<HowItWorksSection />
+				<AdvancedFeaturesSection />
+				<FaqSection />
+				<CtaSection />
+			</main>
+
+			<SiteFooter />
+		</div>
+	</div>
 </Layout>
