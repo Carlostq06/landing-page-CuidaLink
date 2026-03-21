@@ -25,11 +25,35 @@ const { title = 'Bienvenida a CuidaLink' } = Astro.props;
 		</div>
 		<slot />
 		<script is:inline>
-			document.documentElement.classList.add('js');
+			
+			if ('scrollRestoration' in history) {
+				history.scrollRestoration = 'manual';
+			}
+
+			const scrollToTop = () => {
+				window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+			};
+
+			const ensureJsClass = () => {
+				document.documentElement.classList.add('js');
+			};
+
+			const resetGradualReveal = () => {
+				document
+					.querySelectorAll('.reveal.is-visible')
+					.forEach((node) => node.classList.remove('is-visible'));
+			};
 
 			const activateGradualReveal = () => {
+				ensureJsClass();
+
 				const nodes = document.querySelectorAll('.reveal:not(.is-visible)');
 				if (!nodes.length) return;
+
+				if (!('IntersectionObserver' in window)) {
+					nodes.forEach((node) => node.classList.add('is-visible'));
+					return;
+				}
 
 				const observer = new IntersectionObserver(
 					(entries, obs) => {
@@ -45,13 +69,28 @@ const { title = 'Bienvenida a CuidaLink' } = Astro.props;
 				nodes.forEach((node) => observer.observe(node));
 			};
 
+			const rerunGradualReveal = () => {
+				scrollToTop();
+				resetGradualReveal();
+				requestAnimationFrame(() => activateGradualReveal());
+			};
+
 			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', activateGradualReveal, { once: true });
+				document.addEventListener(
+					'DOMContentLoaded',
+					() => {
+						scrollToTop();
+						activateGradualReveal();
+					},
+					{ once: true }
+				);
 			} else {
+				scrollToTop();
 				activateGradualReveal();
 			}
 
-			document.addEventListener('astro:page-load', activateGradualReveal);
+			document.addEventListener('astro:after-swap', ensureJsClass);
+			document.addEventListener('astro:page-load', rerunGradualReveal);
 		</script>
 	</body>
 </html>

@@ -40,7 +40,7 @@ body {
 	border-radius: inherit;
 	transform-origin: left;
 	transform: scaleX(0);
-	background: #0c7723;
+	background: var(--color-primary);
 	box-shadow: 0 0 12px rgb(22 163 74 / 55%);
 }
 
@@ -281,4 +281,13 @@ body::-webkit-scrollbar {
 		'wght' 400,
 		'GRAD' 0,
 		'opsz' 24;
+}
+
+@layer utilities {
+  /* Sobrescribimos las clases de Tailwind directamente en el CSS */
+  .rounded { border-radius: 0.25rem; }
+  .rounded-lg { border-radius: 0.5rem; }
+  .rounded-xl { border-radius: 0.75rem; }
+  .rounded-full { border-radius: 9999px !important; } /* El !important asegura que gane a la clase nativa */
+  
 }
