@@ -11,20 +11,18 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Bienvenida a CuidaLink">
-	<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-		<div class="layout-container flex h-full grow flex-col">
-			<SiteHeader />
+	<div class="relative w-full overflow-x-hidden">
+		<SiteHeader />
 
-			<main class="flex flex-1 flex-col justify-center">
-				<HeroSection />
-				<WhyChooseSection />
-				<HowItWorksSection />
-				<AdvancedFeaturesSection />
-				<FaqSection />
-				<CtaSection />
-			</main>
+		<main class="flex flex-col pt-14">
+			<HeroSection />
+			<WhyChooseSection />
+			<HowItWorksSection />
+			<AdvancedFeaturesSection />
+			<FaqSection />
+			<CtaSection />
+		</main>
 
-			<SiteFooter />
-		</div>
+		<SiteFooter />
 	</div>
 </Layout>
