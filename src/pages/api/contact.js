@@ -1,6 +1,17 @@
-import { Resend } from 'resend';
-
 export const prerender = false;
+
+// Endpoint de prueba: visita /api/contact directamente en el navegador
+export async function GET() {
+  const apiKey = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
+  return new Response(
+    JSON.stringify({
+      status: 'ok',
+      hasApiKey: !!apiKey,
+      apiKeyLength: apiKey?.length ?? 0,
+    }),
+    { status: 200, headers: { 'Content-Type': 'application/json' } }
+  );
+}
 
 export async function POST(context) {
   console.log('=== CONTACT API CALLED ===');
@@ -18,6 +29,9 @@ export async function POST(context) {
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    console.log('1b. Importando Resend...');
+    const { Resend } = await import('resend');
 
     console.log('2. Parseando datos del formulario...');
     const body = await context.request.json();

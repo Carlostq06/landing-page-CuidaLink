@@ -1,10 +1,20 @@
 import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
-import { Resend } from "resend";
 //#region src/pages/api/contact.js
 var contact_exports = /* @__PURE__ */ __exportAll({
+	GET: () => GET,
 	POST: () => POST,
 	prerender: () => false
 });
+async function GET() {
+	return new Response(JSON.stringify({
+		status: "ok",
+		hasApiKey: true,
+		apiKeyLength: 36
+	}), {
+		status: 200,
+		headers: { "Content-Type": "application/json" }
+	});
+}
 async function POST(context) {
 	console.log("=== CONTACT API CALLED ===");
 	try {
@@ -12,6 +22,8 @@ async function POST(context) {
 		const apiKey = "re_iv392Ryi_4RWTNExoTLYjWBaHBMvQTAMW";
 		console.log("API KEY presente:", true);
 		console.log("API KEY length:", 36);
+		console.log("1b. Importando Resend...");
+		const { Resend } = await import("resend");
 		console.log("2. Parseando datos del formulario...");
 		const body = await context.request.json();
 		console.log("Body recibido:", {
