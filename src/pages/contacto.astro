@@ -149,39 +149,57 @@ import SiteFooter from "../components/index/SiteFooter.astro";
 </Layout>
 
 <script>
+  console.log('🚀 Script de contacto iniciado');
+
   const form = document.getElementById('contactForm') as HTMLFormElement;
   const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
   const successMessage = document.getElementById('successMessage') as HTMLDivElement;
 
-  form.addEventListener('submit', async (e) => {
+  if (!form) {
+    console.error('❌ Formulario no encontrado');
+  } else {
+    console.log('✅ Formulario encontrado');
+  }
+
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    console.log('📤 Enviando formulario...');
 
     const name = (document.getElementById('name') as HTMLInputElement).value;
     const email = (document.getElementById('email') as HTMLInputElement).value;
     const message = (document.getElementById('message') as HTMLTextAreaElement).value;
 
+    console.log('Datos:', { name, email, messageLength: message.length });
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando...';
 
     try {
+      console.log('🔄 Llamando a /api/contact...');
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message }),
       });
 
+      console.log('Respuesta recibida. Status:', response.status);
+      const data = await response.json();
+      console.log('Datos de respuesta:', data);
+
       if (response.ok) {
+        console.log('✅ Email enviado exitosamente');
         form.reset();
         successMessage.classList.remove('hidden');
         submitBtn.textContent = 'Enviar Mensaje';
         setTimeout(() => successMessage.classList.add('hidden'), 5000);
       } else {
-        alert('Error al enviar el mensaje. Intenta de nuevo.');
+        console.error('❌ Error en respuesta:', data);
+        alert(`Error: ${data.error || 'Error desconocido'}`);
         submitBtn.textContent = 'Enviar Mensaje';
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error al enviar el mensaje. Intenta de nuevo.');
+      console.error('❌ Error en fetch:', error);
+      alert(`Error: ${error instanceof Error ? error.message : 'Error desconocido'}`);
       submitBtn.textContent = 'Enviar Mensaje';
     } finally {
       submitBtn.disabled = false;
