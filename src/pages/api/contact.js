@@ -7,7 +7,7 @@ export async function POST(context) {
 
   try {
     console.log('1. Verificando API KEY...');
-    const apiKey = import.meta.env.RESEND_API_KEY;
+    const apiKey = import.meta.env.RESEND_API_KEY || process.env.RESEND_API_KEY;
     console.log('API KEY presente:', !!apiKey);
     console.log('API KEY length:', apiKey?.length);
 
