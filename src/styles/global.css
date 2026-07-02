@@ -41,7 +41,7 @@ body {
 	transform-origin: left;
 	transform: scaleX(0);
 	background: var(--color-primary);
-	box-shadow: 0 0 12px rgb(22 163 74 / 55%);
+	box-shadow: 0 0 12px #17a34a8c;
 }
 
 .timeline-scroll {
