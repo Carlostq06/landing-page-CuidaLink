@@ -1,21 +1,31 @@
 import { Resend } from 'resend';
 import type { APIRoute } from 'astro';
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
-
 export const POST: APIRoute = async (context) => {
-  const { name, email, message } = await context.request.json();
-
-  if (!name || !email || !message) {
-    return new Response(JSON.stringify({ error: 'Faltan campos requeridos' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
   try {
-    await resend.emails.send({
-      from: 'noreply@cuidalink.com',
+    const apiKey = import.meta.env.RESEND_API_KEY;
+
+    if (!apiKey) {
+      console.error('RESEND_API_KEY no está configurada');
+      return new Response(
+        JSON.stringify({ error: 'Configuración del servidor incompleta' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { name, email, message } = await context.request.json();
+
+    if (!name || !email || !message) {
+      return new Response(
+        JSON.stringify({ error: 'Faltan campos requeridos' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const resend = new Resend(apiKey);
+
+    const result = await resend.emails.send({
+      from: 'onboarding@resend.dev',
       to: 'cuidalink92@gmail.com',
       replyTo: email,
       subject: `Nuevo mensaje de contacto de ${name}`,
@@ -28,15 +38,23 @@ export const POST: APIRoute = async (context) => {
       `,
     });
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    if (result.error) {
+      console.error('Error de Resend:', result.error);
+      return new Response(
+        JSON.stringify({ error: 'Error al enviar el email' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ success: true, id: result.data?.id }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
-    console.error('Error enviando email:', error);
-    return new Response(JSON.stringify({ error: 'Error al enviar el email' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    console.error('Error en /api/contact:', error);
+    return new Response(
+      JSON.stringify({ error: 'Error interno del servidor', details: String(error) }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 };
