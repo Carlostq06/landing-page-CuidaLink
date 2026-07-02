@@ -1,0 +1,20 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SiteHeader from "../components/index/SiteHeader.astro";
+import SiteFooter from "../components/index/SiteFooter.astro";
+import HeroaboutSection from "../components/about/HeroaboutSection.astro";
+import Ourpillars from "../components/about/Ourpillars.astro";
+---
+
+<Layout title="Sobre Nosotros - CuidaLink">
+    <div class="relative w-full overflow-x-hidden">
+        
+		<SiteHeader />
+        <main class="pt-25  max-w-7xl mx-auto">
+			<HeroaboutSection />
+            <Ourpillars />
+		</main>
+		<SiteFooter />
+	</div>
+    
+</Layout>

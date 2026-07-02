@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+import logo from "../../assets/CuidaLink.svg"
+
+// src/components/Navbar.astro
+const pathname = new URL(Astro.url).pathname;
+const currentPath = pathname.slice(1); // Quita la barra inclinada "/" inicial
+
+// Definimos los enlaces para no repetir código
+const navItems = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Sobre Nosotros', href: '/about' },
+  { name: 'Ayuda', href: '/ayuda' },
+  { name: 'Contacto', href: '/contacto' },
+];
+---
+
+<header class="fixed left-0 right-0 top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 bg-white/90 px-6 py-3 shadow-sm backdrop-blur-md md:px-10">
+  <div class="flex items-center gap-4">
+  <a href="/" class="block">
+    <Image
+      alt="Logo de CuidaLink"
+      class="h-8 w-auto"
+      src={logo}
+      loading="eager"
+    />
+  </a>
+</div>
+
+  <div class="hidden flex-1 justify-end gap-8 md:flex">
+    <div class="flex items-center gap-9">
+      <a class="nav-link text-sm font-medium text-slate-600 hover:text-primary" href="/about">Sobre Nosotros</a>
+      <a class="nav-link text-sm font-medium text-slate-600 hover:text-primary" href="/ayuda">Ayuda</a>
+      <a class="nav-link text-sm font-medium text-slate-600 hover:text-primary" href="/contacto">Contacto</a>
+    </div>
+    <button class="btn-shine soft-glow flex h-10 cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-primary px-6 text-sm font-bold text-white shadow-md transition-all hover:bg-primary-hover">
+      <span class="truncate">Acceder</span>
+    </button>
+  </div>
+
+  <button class="text-slate-900 md:hidden" aria-label="Abrir menu">
+    <span class="material-symbols-outlined">menu</span>
+  </button>
+</header>
